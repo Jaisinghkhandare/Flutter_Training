@@ -1,23 +1,29 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../UiState.dart';
-import '../feature/User/list/Bloc.dart';
-import '../feature/User/list/user_event.dart';
+import '../feature/User/list/list_bloc.dart';
+import '../feature/User/list/list_event.dart';
+import '../feature/User/model/UserModel.dart';
+import 'add_user_ui.dart';
 
 class UserScreen extends StatelessWidget {
   const UserScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     print("heheheh");
     // User user=new User(name: 'jais', email: 'jais@gmail.com', gender: 'Male', status: 'Active');
     return Scaffold(
       appBar: AppBar(title: Text("")),
-      body: BlocBuilder<UserBloc, UiState<List<User>>>(
+      body: BlocConsumer<UserBloc, UiState<List<User>>>(
+        listener:(context,state){
+
+        },
         builder: (context, state) {
-          if (state is Initial)
-          {
+          if (state is Initial) {
             return Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -47,7 +53,7 @@ class UserScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      user.status.toUpperCase(),
+                      user.status.name.toUpperCase(),
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -68,10 +74,14 @@ class UserScreen extends StatelessWidget {
 
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showUserDialog(context);
+        onPressed: () async{
+           final result = await showUserDialog(context);
+           if(result){
+             context.read<UserBloc>().add(FetchUsersEvent());
+           }
         },
         child: const Icon(Icons.add),
       ),
     );
   }
+}

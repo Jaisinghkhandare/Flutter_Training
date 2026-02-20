@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-import 'package:exercise01/model/UserModel.dart';
+//import 'package:exercise01/model/UserModel.dart';
 import 'package:http/http.dart' as http;
+
+import '../../User/model/UserModel.dart';
 //mockito
 //mocktail
 //add dependency test and flutter_test
@@ -32,7 +34,7 @@ class ApiService {
 
 
   Future<User> createUser(User user) async {
-
+    print('***** inside createUser:api');
     final response = await httpClient.post(
       Uri.parse('https://gorest.co.in/public/v2/users'),
       headers: {
@@ -42,14 +44,15 @@ class ApiService {
       body: jsonEncode({
         "name": user.name,
         "email": user.email,
-        "gender": user.gender,
-        "status": user.status,
+        "gender": user.gender.name,
+        "status": user.status.name,
       }),
     );
 
     if (response.statusCode == 201) {
       return User.fromJson(jsonDecode(response.body));
     } else {
+      print('>>>>> Not 201 : ${response.body}');
       throw Exception(response.body);
     }
   }

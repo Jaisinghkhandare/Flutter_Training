@@ -5,7 +5,6 @@ abstract class UiState<T> {
 class Initial<T> extends UiState<T> {}
 
 class Loading<T> extends UiState<T> {}
-
 class Success<T> extends UiState<T> {
   final T data;
   Success(this.data);

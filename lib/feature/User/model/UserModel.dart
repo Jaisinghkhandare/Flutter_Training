@@ -1,8 +1,10 @@
+import 'User_enums.dart';
+
 class User {
   final String name;
   final String email;
-  final String gender;
-  final String status;
+  final Gender gender;
+  final Status status;
 
   User({
     required this.name,
@@ -10,23 +12,28 @@ class User {
     required this.gender,
     required this.status,
   });
-  bool get isActive => status.toLowerCase() == "active";
+
+  bool get isActive => status == Status.active;
 
   Map<String, dynamic> toJson() {
     return {
       'name': name,
       'email': email,
-      'gender':gender,
-      'status': status,
+      'gender': gender.name, // converts enum → string
+      'status': status.name,
     };
   }
-  // Optional: Create from JSON
+
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       name: json['name'],
       email: json['email'],
-      gender: json['gender'],
-      status: json['status'],
+      gender: Gender.values.firstWhere(
+            (e) => e.name == json['gender'],
+      ),
+      status: Status.values.firstWhere(
+            (e) => e.name == json['status'],
+      ),
     );
   }
-  }
+}

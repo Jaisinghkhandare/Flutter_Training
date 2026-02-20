@@ -1,13 +1,15 @@
 
 //import 'package:api_learning/user_model.dart';
 import 'package:exercise01/UiState.dart';
-import 'package:exercise01/feature/User/list/user_event.dart';
-import 'package:exercise01/model/UserModel.dart';
+import 'package:exercise01/feature/User/list/list_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../UiState.dart';
-import 'api.dart';
+import '../../core/service/api.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../model/UserModel.dart';
+import 'list_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UiState<List<User>>> {
 
