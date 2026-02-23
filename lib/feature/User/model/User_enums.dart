@@ -1,3 +1,17 @@
-enum Gender { male, female }
+import 'package:json_annotation/json_annotation.dart';
 
-enum Status { active, inactive }
+enum Gender {
+  @JsonValue('male')
+  male,
+
+  @JsonValue('female')
+  female,
+}
+
+enum Status {
+  @JsonValue('active')
+  active,
+
+  @JsonValue('inactive')
+  inactive,
+}

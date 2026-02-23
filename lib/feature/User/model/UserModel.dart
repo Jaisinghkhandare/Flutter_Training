@@ -1,12 +1,18 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'User_enums.dart';
 
+part 'UserModel.g.dart';
+
+@JsonSerializable()
 class User {
+  final int id;
   final String name;
   final String email;
   final Gender gender;
   final Status status;
 
-  User({
+  const User({
+    required this.id,
     required this.name,
     required this.email,
     required this.gender,
@@ -15,25 +21,8 @@ class User {
 
   bool get isActive => status == Status.active;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'email': email,
-      'gender': gender.name, // converts enum → string
-      'status': status.name,
-    };
-  }
+  factory User.fromJson(Map<String, dynamic> json) =>
+      _$UserFromJson(json);
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      name: json['name'],
-      email: json['email'],
-      gender: Gender.values.firstWhere(
-            (e) => e.name == json['gender'],
-      ),
-      status: Status.values.firstWhere(
-            (e) => e.name == json['status'],
-      ),
-    );
-  }
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

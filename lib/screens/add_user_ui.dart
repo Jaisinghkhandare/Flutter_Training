@@ -92,6 +92,7 @@ Future<bool> showUserDialog(BuildContext context) async {
               final data = _formKey.currentState?.value;
 
               final user = User(
+                id: 0,
                 name: data?['name'] ?? '',
                 email: data?['email'] ?? '',
                 gender: data?['gender'] ?? Gender.male,

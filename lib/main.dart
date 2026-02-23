@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:exercise01/feature/User/create/add_user_event.dart';
+import 'package:exercise01/feature/User/favorite/User_favorite_bloc.dart';
 import 'package:exercise01/feature/User/list/list_bloc.dart';
 import 'package:exercise01/feature/User/list/list_event.dart';
 import 'package:exercise01/screens/ListingUi.dart';
@@ -10,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'UiState.dart';
 import 'feature/User/create/add_user_bloc.dart';
+import 'feature/User/favorite/User_favorite_event.dart';
 import 'feature/core/service/api.dart';
 
 import 'package:flutter/material.dart';
@@ -35,6 +37,7 @@ void main() {
 }
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,6 +46,10 @@ class MyApp extends StatelessWidget {
           create: (_) => UserBloc(ApiService(httpClient: http.Client())),
         ),
         BlocProvider(create: (_)=>AddUserBloc(ApiService(httpClient: http.Client())),
+        ),
+        BlocProvider(
+          create: (_) => UserFavoriteBloc()
+            ..add(LoadFavoritesEvent()),
         ),
 
       ], child: UserScreen(),)
