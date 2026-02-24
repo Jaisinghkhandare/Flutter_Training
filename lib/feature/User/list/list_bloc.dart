@@ -1,19 +1,16 @@
-
-//import 'package:api_learning/user_model.dart';
-import 'package:exercise01/UiState.dart';
+import 'package:exercise01/feature/core/state/ui_state.dart';
 import 'package:exercise01/feature/User/list/list_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../UiState.dart';
 import '../../core/service/api.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/UserModel.dart';
-import 'list_state.dart';
+import '../model/user_model.dart';
 
 class UserBloc extends Bloc<UserEvent, UiState<List<User>>> {
 
   final ApiService apiService;
+  Map<int, bool> favorites = {};
+
 
   UserBloc(this.apiService) : super(Initial()) {
 
@@ -24,6 +21,19 @@ class UserBloc extends Bloc<UserEvent, UiState<List<User>>> {
       try {
         final users = await apiService.apiCall();
         emit(Success(users!));
+      } catch (e) {
+        emit(Error(e.toString()));
+      }
+    });
+    on<FetchfavEvent>((event ,emit)async
+    {
+
+    });
+
+    on<DeleteUserEvent>((event, emit) async {
+      try {
+        await apiService.deleteUser(event.userId);
+        add(FetchUsersEvent());
       } catch (e) {
         emit(Error(e.toString()));
       }
