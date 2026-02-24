@@ -79,6 +79,12 @@ class UserScreen extends StatelessWidget {
                         ),
 
                         FavoriteButton(userId: user.id),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            context.read<UserBloc>().add(DeleteUserEvent(user.id));
+                          },
+                        ),
                       ],
                     ),
                   );

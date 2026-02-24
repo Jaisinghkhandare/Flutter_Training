@@ -29,6 +29,15 @@ class UserBloc extends Bloc<UserEvent, UiState<List<User>>> {
     {
 
     });
+
+    on<DeleteUserEvent>((event, emit) async {
+      try {
+        await apiService.deleteUser(event.userId);
+        add(FetchUsersEvent());
+      } catch (e) {
+        emit(Error(e.toString()));
+      }
+    });
   }
 }
 
