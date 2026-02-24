@@ -13,17 +13,22 @@ import 'add_user_ui.dart';
 
 class UserScreen extends StatelessWidget {
   const UserScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(title: const Text("List")),
+      appBar: AppBar(title: const Text("List"),
+          actions: [
+          IconButton(
+          icon: Icon(Icons.favorite),
+      onPressed: () {
 
+      },
+    ),
+    ],
+    ),
       body: BlocListener<AddUserBloc, UiState>(
         listener: (context, addState) {
 
-          /// ⭐ When user added successfully → refresh list
           if (addState is Success) {
             context.read<UserBloc>().add(FetchUsersEvent());
 
@@ -39,8 +44,7 @@ class UserScreen extends StatelessWidget {
           }
         },
 
-        child: BlocConsumer<UserBloc, UiState<List<User>>>(
-          listener: (context, state) {},
+        child: BlocBuilder<UserBloc, UiState<List<User>>>(
           builder: (context, state) {
 
             if (state is Initial) {
@@ -121,7 +125,6 @@ class UserScreen extends StatelessWidget {
                 },
               );
             }
-
             if (state is Error) {
               return Center(child: Text(state.message));
             }
@@ -133,7 +136,6 @@ class UserScreen extends StatelessWidget {
         ),
       ),
 
-      /// ⭐ Floating Button Simplified
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showUserDialog(context);
