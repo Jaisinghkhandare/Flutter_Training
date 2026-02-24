@@ -1,16 +1,10 @@
-
-//import 'package:api_learning/user_model.dart';
-import 'package:exercise01/UiState.dart';
+import 'package:exercise01/feature/core/state/ui_state.dart';
 import 'package:exercise01/feature/User/list/list_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../UiState.dart';
 import '../../core/service/api.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../model/UserModel.dart';
-import 'list_state.dart';
+import '../model/user_model.dart';
 
 class UserBloc extends Bloc<UserEvent, UiState<List<User>>> {
 
@@ -31,14 +25,10 @@ class UserBloc extends Bloc<UserEvent, UiState<List<User>>> {
         emit(Error(e.toString()));
       }
     });
+    on<FetchfavEvent>((event ,emit)async
+    {
+
+    });
   }
-
-
-
-
-
-
-
-
 }
 

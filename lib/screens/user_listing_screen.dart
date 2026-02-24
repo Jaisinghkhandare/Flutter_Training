@@ -2,14 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../UiState.dart';
+import '../feature/core/state/ui_state.dart';
 import '../feature/User/create/add_user_bloc.dart';
 import '../feature/User/favorite/User_favorite_bloc.dart';
 import '../feature/User/favorite/User_favorite_event.dart';
 import '../feature/User/list/list_bloc.dart';
 import '../feature/User/list/list_event.dart';
-import '../feature/User/model/UserModel.dart';
+import '../feature/User/model/user_model.dart';
 import 'add_user_ui.dart';
+import 'favorite_button.dart';
 
 class UserScreen extends StatelessWidget {
   const UserScreen({super.key});
@@ -26,25 +27,7 @@ class UserScreen extends StatelessWidget {
     ),
     ],
     ),
-      body: BlocListener<AddUserBloc, UiState>(
-        listener: (context, addState) {
-
-          if (addState is Success) {
-            context.read<UserBloc>().add(FetchUsersEvent());
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("User Added Successfully")),
-            );
-          }
-
-          if (addState is Error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(addState.message)),
-            );
-          }
-        },
-
-        child: BlocBuilder<UserBloc, UiState<List<User>>>(
+      body: BlocBuilder<UserBloc, UiState<List<User>>>(
           builder: (context, state) {
 
             if (state is Initial) {
@@ -95,30 +78,7 @@ class UserScreen extends StatelessWidget {
                           ),
                         ),
 
-                        BlocBuilder<UserFavoriteBloc, UiState<Set<int>>>(
-                          builder: (context, favState) {
-
-                            bool isFav = false;
-
-                            if (favState is Success<Set<int>>) {
-                              isFav = favState.data.contains(user.id);
-                            }
-
-                            return IconButton(
-                              onPressed: () {
-                                context.read<UserFavoriteBloc>().add(
-                                  ToggleFavoriteEvent(user.id),
-                                );
-                              },
-                              icon: Icon(
-                                isFav
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: Colors.red,
-                              ),
-                            );
-                          },
-                        ),
+                        FavoriteButton(userId: user.id),
                       ],
                     ),
                   );
@@ -134,11 +94,15 @@ class UserScreen extends StatelessWidget {
             );
           },
         ),
-      ),
+
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showUserDialog(context);
+        onPressed: () async{
+         final result= await showUserDialog(context);
+         if(result==true)
+           {
+             context.read<UserBloc>().add(FetchUsersEvent());
+           }
         },
         child: const Icon(Icons.add),
       ),

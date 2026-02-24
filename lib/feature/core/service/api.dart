@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-//import 'package:exercise01/model/UserModel.dart';
+//import 'package:exercise01/model/user_model.dart';
 import 'package:http/http.dart' as http;
 
-import '../../User/model/UserModel.dart';
+import '../../User/model/user_model.dart';
 //mockito
 //mocktail
 //add dependency test and flutter_test
@@ -31,10 +31,25 @@ class ApiService {
     }
     return null;
   }
+  Future<void> deleteUser(int userId) async {
+    final url = Uri.parse('https://gorest.co.in/public/v2/users/$userId');
+
+    final response = await http.delete(
+      url,
+      headers: {
+        'Authorization': 'Bearer 38b87c29678a9e384ea3015f1bfc502b74c27d37b1b9e15c22af5d2df59f6592',
+        'Content-Type': 'application/json',
+      },
+    );
+    if (response.statusCode != 204) {
+      throw Exception("Failed to delete user: ${response.body}");
+    }
+  }
+
+
 
 
   Future<User> createUser(User user) async {
-    print('***** inside createUser:api');
     final response = await httpClient.post(
       Uri.parse('https://gorest.co.in/public/v2/users'),
       headers: {
@@ -52,7 +67,6 @@ class ApiService {
     if (response.statusCode == 201) {
       return User.fromJson(jsonDecode(response.body));
     } else {
-      print('>>>>> Not 201 : ${response.body}');
       throw Exception(response.body);
     }
   }

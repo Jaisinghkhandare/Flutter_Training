@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../UiState.dart';
+import '../../core/state/ui_state.dart';
 import 'User_favorite_event.dart';
 
 class UserFavoriteBloc extends Bloc<UserFavoriteEvent, UiState<Set<int>>> {
@@ -13,7 +13,10 @@ class UserFavoriteBloc extends Bloc<UserFavoriteEvent, UiState<Set<int>>> {
 
     on<LoadFavoritesEvent>(_onLoadFavorites);
     on<ToggleFavoriteEvent>(_onToggleFavorite);
+    on<LoadFav>((event,emit)async {
+      final prefs = await SharedPreferences.getInstance();
 
+    });
     add(LoadFavoritesEvent());
   }
 

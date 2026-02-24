@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'User_enums.dart';
 
-part 'UserModel.g.dart';
+part 'user_model.g.dart';
 
 @JsonSerializable()
 class User {
